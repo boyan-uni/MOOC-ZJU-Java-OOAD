@@ -2,76 +2,83 @@ package dsal.ds.queue.impl;
 
 import dsal.ds.queue.QueueADT;
 import dsal.ds.queue.node.ArrayNode;
+import dsal.ds.queue.node.Node;
 
 public class ArrayQueue implements QueueADT {
-    private int Max_Size;
-    private ArrayNode[] arrayQueue;
-    private int front;
-    private int rear;
+    protected int Max_Size;
+    protected ArrayNode[] arrayQueue;
+    protected int front;
+    protected int rear;
 
     public ArrayQueue(int Max_Size){
         this.Max_Size = Max_Size;
         arrayQueue = new ArrayNode[Max_Size];
-        front = -1;
-        rear = -1;
+        front = 0;
+        rear = 0;
     }
     @Override
     public void clear(){
         arrayQueue = new ArrayNode[Max_Size];
-        front = -1;
-        rear = -1;
+        front = 0;
+        rear = 0;
     }
     @Override
     public boolean isEmpty(){
         if (front == rear){
             return true;
-        } else {
-            return false;
         }
+        return false;
+    }
+    @Override
+    public boolean isFull(){
+        if (rear == Max_Size){
+            return true;
+        }
+        return false;
     }
     @Override
     public int getLength(){
-        return (rear-front);
+        return rear - front;
     }
     @Override
-    public ArrayNode getHeadNode(){
-        return arrayQueue[front+1];
+    public Node getHeadNode(){
+        return arrayQueue[front];
     }
     @Override
     public void enQueue(int value){
-        if (isEnable()){
-            rear++;
+        if (!isFull()){
             arrayQueue[rear] = new ArrayNode(value);
+            rear++;
             System.out.println("在队尾插入成功");
         } else {
             System.out.println("当前ArrayQueue已满，无法插入");
         }
     }
-    boolean isEnable(){
-        if (rear == (Max_Size-1)){
-            return false;
-        } else {
-            return true;
-        }
-    }
     @Override
-    public ArrayNode deQueue() throws NullPointerException{
+    public Node deQueue(){
         ArrayNode deNode = null;
         if (!isEmpty()){
-            front++;
             deNode = arrayQueue[front];
+            front++;
         } else {
             System.out.println("当前ArrayQueue为空，无法删除");
         }
         return deNode;
     }
     @Override
-    public void traverse(){
-        int count = 1;
-        for (ArrayNode node : arrayQueue){
-            System.out.println("当前遍历到第" + count + "个结点，值为：" + node.getValue());
-            count++;
+    public void traverse() {
+        if (getLength()>0){
+            int count = 0;
+            int flag = front;
+            while (flag!=rear){
+                ArrayNode node = arrayQueue[flag];
+                count++;
+                System.out.println("当前遍历到第" + count + "个结点，值为：" + node.getValue());
+                flag++;
+            }
+            System.out.println("--当前队列共 "+getLength()+" 个Node，遍历结束--");
+        }else if (getLength()==0){
+            System.out.println("当前队列为空，无法遍历，请先插入数据");
         }
-        System.out.println("--遍历结束--");
     }
 }
