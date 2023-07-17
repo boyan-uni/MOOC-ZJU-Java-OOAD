@@ -14,33 +14,52 @@ public class ArrayStack implements Stack {
     public ArrayStack(int maxsize){
         this.MaxSize = maxsize;
         this.stack = new ArrayNode[MaxSize];
-        this.top = 0;
+        this.top = -1;
     }
 
     @Override
     public void push(Node node) {
-        ArrayNode theNode = (ArrayNode) node;
-
+        if (isFull()){
+            System.out.println("当前ArrayStack已满，无法插入");
+        } else {
+            ArrayNode theNode = (ArrayNode) node;
+            top++;
+            stack[top] = theNode;
+        }
     }
 
     @Override
     public Node pop() {
-        return null;
+        if (isEmpty()){
+            System.out.println("当前ArrayStack已空，无法出栈");
+            return null;
+        } else {
+            ArrayNode node = (ArrayNode) getTop();
+            stack[top] = null;
+            top--;
+            System.out.println("弹出栈顶元素："+node);
+            return node;
+        }
     }
 
     @Override
     public void traverse() {
-        int count = 0;
-        System.out.println("打印栈内数据（从base->top）：");
-        for (ArrayNode node: this.stack) {
-            System.out.println("当前遍历到第"+ count +"个结点，结点内存储的数据："+ node);
+        if (getLength()==0){
+            System.out.println("当前栈为空");
+        } else {
+            System.out.println("打印栈内数据（从base->top）：");
+            int count = 0;
+            for(int flag = base; flag <= top; flag++){
+                count++;
+                System.out.println("当前遍历到第"+ count +"个结点（数组位序："+(count-1)+")，结点内存储的数据："+ stack[flag]);
+            }
+            System.out.println("-- 遍历结束 --");
         }
-        System.out.println("-- 遍历结束 --");
     }
 
     @Override
     public boolean isEmpty() {
-        return top == base;
+        return top == -1;
     }
 
     public boolean isFull() {
@@ -50,7 +69,7 @@ public class ArrayStack implements Stack {
 
     @Override
     public int getLength() {
-        return (top - base);
+        return (top - base + 1);
     }
 
     @Override
@@ -61,7 +80,13 @@ public class ArrayStack implements Stack {
     // -- Unit Test --
     public static void main(String[] args) {
         ArrayStack stack = new ArrayStack(3);
-        System.out.println(stack.isEmpty());
-
+        stack.push(new ArrayNode(22));
+        stack.push(new ArrayNode(23));
+        stack.push(new ArrayNode(24));
+        stack.traverse();
+        System.out.println("栈顶元素为："+ stack.getTop());
+        stack.pop();
+        stack.traverse();
+        System.out.println("栈内元素个数："+ stack.getLength());
     }
 }
