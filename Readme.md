@@ -1225,49 +1225,6 @@ Socket是一种编程方式！
 
 
 
-# FAQ列表
-
-###### 1. scanner输入手动EOF问题
-
-```java
-        Scanner scan = new Scanner(System.in);
-				// 在无限循环中
-        while(true){
-            String c= scan.next();				// 1. 接收字符串
-            if (c.matches("###")) break;	// 2. 判断 EOF 则 break 跳出循环
-            else citys.add(c);						// 3. 符合操作条件 正常往下走
-        }
-        scan.close();
-
-// review: 被 while(!hasNextLine) 先入为主限制了思路
-```
-
-
-
-###### 2. scanner.close()
-
-> 如果后面还要用 scanner输入，不要调用 .close()函数！关掉后再次使用会空指针报错！
->
-> 因为使用close()关掉之后将无法再使用Scanner，即使再次声明了一个Scanner对象。
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
